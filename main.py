@@ -11,8 +11,8 @@ from utils import override_email_password_apis
 init(
     app_info=InputAppInfo(
         app_name="Touree",
-        api_domain="http://192.168.1.4:8000",
-        website_domain="http://192.168.1.4:8000",
+        api_domain="http://192.168.1.3:8000",
+        website_domain="http://192.168.1.3:8000",
         api_base_path="/auth",
         website_base_path="/api"
     ),

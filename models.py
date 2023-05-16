@@ -2,12 +2,6 @@ from pydantic import BaseModel
 from typing import Optional, Literal
 
 
-class Branch(BaseModel):
-    name: str
-    address: str
-    phone: str
-
-
 class Review(BaseModel):
     author_name: str
     rating: float
