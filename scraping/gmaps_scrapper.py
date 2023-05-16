@@ -1,3 +1,4 @@
+import time
 from pprint import pprint
 
 from geopy.distance import geodesic
@@ -25,13 +26,33 @@ def get_country(lat, lng):
     )
     return country[0]['address_components'][0]['short_name'].lower()
 
-def get_popular_places(lat,lng, type='tourist_attraction'):
-    places = gmaps.places(
-        type=type,
-        query='Things to do',
-        region=get_country(lat, lng),
-    )
-    return places
+def get_popular_places(lat,lng, type='tourist_attraction',page_token=None):
+    places_return = []
+    while len(places_return) < 20:
+        if page_token:
+            places = gmaps.places(
+                type=type,
+                query='Things to do',
+                region=get_country(lat, lng),
+                page_token=page_token
+            )
+        else:
+            places = gmaps.places(
+                type=type,
+                query='Things to do',
+                region=get_country(lat, lng)
+            )
+        for place in places['results']:
+            if place['rating'] >= 2.5 and place['user_ratings_total'] >= 100:
+                places_return.append(place)
+        if 'next_page_token' in places:
+            page_token = places['next_page_token']
+            time.sleep(2)
+        else:
+            break
+    if len(places_return) > 20:
+        return places_return[:20]
+    return places_return
 
 
 def get_place_details(place_id):
